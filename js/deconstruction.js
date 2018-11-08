@@ -20,9 +20,9 @@
 }
 {
     let [x,y,z] = new Set(['a','b','c'])
-    /* console.log(x)
+    /*console.log(x)
     console.log(y)
-    console.log(z) */
+    console.log(z)*/
 }
 {
     let [foo = true] = []
@@ -97,32 +97,31 @@
         }
     }
     var f = new foo({name:'fff'})
-    f.call({name:'ddd'});
-    var ff = new fo()
-    ff.call({name:'ddd'}); 
-    foo()();
-    obj.foo()();
+    //f.call({name:'ddd'});
+    var ff = new fo({name:'fff'})
+    //ff.call({name:'ddd'});
+    //foo()();
+    //obj.foo()();
     let abc = obj.foo;
     let bcd =obj.detail;
-    abc()();
-    bcd.foo()()
-    bcd.fo()()
+    //abc()();
+    //bcd.foo()()
+    //bcd.fo()()
 }
 {
     let name = 'aaa';
     function aaa (){
-        let name = 'bbb';
+        var name = 'bbb';
         return function bbb (){
-            name = 'ccc';
+            var name = 'ccc';
             console.log(this.name)
             console.log(window.name)
             console.log(this.name)
         }
     }
-    /* var f = aaa();
-    new f() 
-    var f = aaa().call({name:'asdh'});
-    new f()  */
+    var f = aaa();
+    //new f()
+    //var f = aaa().call({name:'asdh'});
 }
 {
     var obj = {
@@ -137,7 +136,7 @@
             }())
         }
     }
-    /* obj.func() */
+     //obj.func()
 }
 {
     var obj = {
@@ -147,6 +146,22 @@
     }
     let {...object} = obj
     let aaa = {...obj}
-    /* console.log(object.aaa)
+     /*console.log(object.aaa)
     console.log(aaa.aaa) */
 }
+Function.prototype.bind = function(){
+    var self = this;    //这个this 指向调用bind函数，就是保存原函数
+    var context = [].shift.call(arguments); //取需要绑定的上下文
+    var args = [].slice.call(arguments);    //取剩余参数
+    return function (){
+        return self.apply(context,[].concat.call(args,[].slice.call(arguments)) )
+    }
+}
+var obj = {
+    name : "zhangsan"
+}
+var foo = function(a,b,c){
+    console.log(this.name)
+    console.log(a,b,c)
+}.bind(obj,1)
+/*foo(2,3)*/
